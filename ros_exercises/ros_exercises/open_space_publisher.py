@@ -22,7 +22,7 @@ class OpenSpacePublisher(Node):
         self.publisher_ = self.create_publisher(OpenSpace, 'open_space', 10)
 
     def listener_callback(self, scan):
-        self.get_logger().info(f'Recieved laser scan message at time: {scan.header.stamp}')
+        # self.get_logger().info(f'Recieved laser scan message at time: {scan.header.stamp}')
         max_distance = float('-inf')
         max_angle = float('-inf')
         for i in range(len(scan.ranges)):
@@ -34,8 +34,7 @@ class OpenSpacePublisher(Node):
         msg.angle = max_angle
         msg.distance = max_distance
         self.publisher_.publish(msg)
-        self.get_logger().info(f'Publishing OpenSpace: {msg.angle}, {msg.distance}')
-        self.angle_publisher_.publish(angle_msg)
+        # self.get_logger().info(f'Publishing OpenSpace: {msg.angle}, {msg.distance}')
         
 
 

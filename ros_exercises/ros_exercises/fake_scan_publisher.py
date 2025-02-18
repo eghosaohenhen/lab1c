@@ -46,9 +46,13 @@ class FakeScanPublisher(Node):
         # range is angle min to angle max inclusive
         angle = msg.angle_min
         msg.ranges = []
+        count = 0 
         while angle <= (msg.angle_max + msg.angle_increment):
             msg.ranges.append(random.uniform(int(msg.range_min), int(msg.range_max)))
             angle += msg.angle_increment
+            count += 1
+            
+
         
         
         # create the range message
