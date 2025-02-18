@@ -23,6 +23,7 @@ setup(
             'talker = ros_exercises.simple_publisher:main',
             'listener = ros_exercises.simple_subscriber:main',
             'fake_scan_publisher = ros_exercises.fake_scan_publisher:main',
+            'open_space_publisher = ros_exercises.open_space_publisher:main',
         ],
     },
 )
