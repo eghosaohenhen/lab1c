@@ -25,6 +25,7 @@ setup(
             'simple_subscriber = ros_exercises.simple_subscriber:main',
             'fake_scan_publisher = ros_exercises.fake_scan_publisher:main',
             'open_space_publisher = ros_exercises.open_space_publisher:main',
+            'dynamic_tf_cam_publisher = ros_exercises.dynamic_tf_cam_publisher:main',
         ],
     },
 )

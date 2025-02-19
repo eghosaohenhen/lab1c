@@ -19,14 +19,42 @@ from std_msgs.msg import Float32
 from sensor_msgs.msg import LaserScan
 
 
+'''
+
+fake_scan topic
+Publish rate
+Angle_min
+Angle_max
+Range_min
+Range_max
+Angle_increment
+
+'''
+
 class FakeScanPublisher(Node):
 
     def __init__(self):
         super().__init__('fake_scan_publisher')
-        self.publisher_ = self.create_publisher(LaserScan, 'fake_scan', 10)
+        self.declare_parameters(
+            namespace='',
+            parameters=[
+                ('topic', "fake_scan"),
+                ('angle_min', (-2/3)*math.pi),
+                ('angle_max', (2/3)*math.pi),
+                ('range_min', 1.0),
+                ('range_max', 10.0),
+                ('angle_increment', (1/300)*math.pi)
+            ]
+        )
+        
+        
+        # ? how am i supposed to use the topic parameter?
+        
+        self.publisher_ = self.create_publisher(LaserScan, self.get_parameter('topic').value, 10)
         self.range_publisher_ = self.create_publisher(Float32, 'range_test', 10)
         timer_period = 0.05  # seconds
         self.timer = self.create_timer(timer_period, self.timer_callback)
+        
 
     def timer_callback(self):
         
@@ -36,21 +64,22 @@ class FakeScanPublisher(Node):
         msg = LaserScan()
         msg.header.frame_id = 'base_link'
         msg.header.stamp = self.get_clock().now().to_msg()
-        msg.angle_min = (-2/3)*math.pi
-        msg.angle_max = (2/3)*math.pi
-        msg.angle_increment =(1/300)*math.pi
+        msg.angle_min = self.get_parameter('angle_min').value
+        msg.angle_max = self.get_parameter('angle_max').value
+        msg.angle_increment = self.get_parameter('angle_increment').value
         # cuz we are publishing at a rate of 20Hz
         msg.scan_time = 0.05 
-        msg.range_min = 1.0
-        msg.range_max = 10.0
+        msg.range_min = self.get_parameter('range_min').value
+        msg.range_max = self.get_parameter('range_max').value
         # range is angle min to angle max inclusive
-        angle = msg.angle_min
+        # angle = msg.angle_min
         msg.ranges = []
-        count = 0 
-        while angle <= (msg.angle_max + msg.angle_increment):
+        # count = 0 
+        # while angle <= (msg.angle_max + msg.angle_increment):
+        for i in range(401):
             msg.ranges.append(random.uniform(int(msg.range_min), int(msg.range_max)))
-            angle += msg.angle_increment
-            count += 1
+            # angle += msg.angle_increment
+            # count += 1
             
 
         

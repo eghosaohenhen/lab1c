@@ -11,15 +11,23 @@ class OpenSpacePublisher(Node):
 
     def __init__(self):
         super().__init__('open_space_publisher')
+        
+        self.declare_parameters(
+            namespace='',
+            parameters=[
+                ('subscriber_topic', "fake_scan"),
+                ('publisher_topic', "open_space")
+            ]
+        )
         self.subscription = self.create_subscription(
             LaserScan,
-            'fake_scan',
+            self.get_parameter('subscriber_topic').value,
             self.listener_callback,
             10)
         self.subscription  # prevent unused variable warning
         # self.angle_publisher_ = self.create_publisher(Float32, 'open_space/angle', 10)
         # self.distance_publisher_ = self.create_publisher(Float32, 'open_space/distance', 10)
-        self.publisher_ = self.create_publisher(OpenSpace, 'open_space', 10)
+        self.publisher_ = self.create_publisher(OpenSpace, self.get_parameter('publisher_topic').value, 10)
 
     def listener_callback(self, scan):
         # self.get_logger().info(f'Recieved laser scan message at time: {scan.header.stamp}')
